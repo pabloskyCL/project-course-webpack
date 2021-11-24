@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 module.exports = {
     entry: './src/index.js',
@@ -12,7 +15,7 @@ module.exports = {
         assetModuleFilename: 'assets/images/[hash][ext][query]',
     },
     mode: 'development',
-    watch: true, 
+    devtool:'source-map',
     resolve: {
         extensions: ['.js'],
         alias: {
@@ -74,5 +77,19 @@ module.exports = {
             }]
         }),
         new Dotenv(),
+        new webpack.HotModuleReplacementPlugin(),
+        new BundleAnalyzerPlugin(),
     ],
+    devServer: {
+/* esta linea anteriormente era con contentBase en ves de static da error contentBase porque esta deprecado*/
+        static: {
+            directory: path.join(__dirname, 'dist'),
+            },
+        hot: true,
+        liveReload: false,
+        compress: true,
+        historyApiFallback: true,
+        port: 3006,
+        open: true,
+    },
 }

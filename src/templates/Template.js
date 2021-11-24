@@ -42,4 +42,8 @@ const Template = async () => {
   return view;
 };
 
+if(module.hot){
+  module.hot.accept();
+}
+
 export default Template;
